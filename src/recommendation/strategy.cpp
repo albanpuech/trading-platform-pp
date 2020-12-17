@@ -194,13 +194,33 @@ std::tuple<bool, double> Strategy::calculate_signals(){
 }
 
 void Strategy::simulate(){
+     std::map<int, double> data_plot_short; // map (day --> momentum/ short_ema/ short_sma ) where day = 1 is yesterday, 
+    // day = 2 is the day before, ...
+     std::map<int, double> data_plot_long; // map (day --> long_ema/ long_sma ) where day = 1 is yesterday, 
+    // day = 2 is the day before, ...
+    
+   
+    int nb_points = 7; // number of points in our plot (ex : plot of the momentum of the 7 latest days)
+    
 
     if (this->get_name() == 'EMA'){ //exponential moving average
         //
     }
+    
+    
     if (this->get_name() == 'MOM'){//momentum
-        
+        for (int k=0, k<nb_points, k++){
+         std::map<long, double> bars_10 = this->get_data(9,k);
+         std::map<long, double> bars_5 = this->get_data(4,k);
+         double sma_10 = this->calculate_sma(bars_10);
+         double sma_5 = this->calculate_sma(bars_5);
+         double moment = sma_5/sma_10;
+         data_plot_short.insert(pair<int, double>(k, moment));
+        }
     }
+    
+    
+    
     if (this->get_name() == 'LR'){//linear regression
         //
     } 
