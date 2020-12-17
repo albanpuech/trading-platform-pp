@@ -6,6 +6,8 @@
 #include <QtWidgets>
 #include <QtCharts/QtCharts>
 #include <iostream>
+#include <map>
+
 
 class Strategy
 {

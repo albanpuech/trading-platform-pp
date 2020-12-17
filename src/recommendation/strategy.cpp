@@ -3,6 +3,7 @@
 #include "../helper/QJsonObjectManipulation.h"
 #include <string>
 #include <tuple>
+#include <map>
 
 
 Strategy::Strategy(){
@@ -58,9 +59,7 @@ std::map<long, double> Startegy::get_data(int N, int k=0){
 bool Strategy::exponential_moving_average(){
 
     std::map<long, double> bars_11 = this->get_data(11);
-    if (bars_11.empty()) continue; // check if empty and include more bars
     std::map<long, double> bars_6 = this->get_data(6);
-    if (bars_11.empty()) continue; // check if empty and include more bars
     double ema_11 = this->calculate_ema(bars_11); // Longer Moving Average
     double ema_06 = this->calculate_ema(bars_6);  // Shorter Moving Average
     double markup = 0.05;// markup introduces anticipation into our strategy:
@@ -103,7 +102,7 @@ int Strategy::auxiliary_momentum(std::map<int, double> &cache){
      if(cache.at(0)<1)
          return 0;
      double diff1=cache.at(3)-cache.at(2);
-     double diff2=cache.at(1)-diff2=cache.at(0);
+     double diff2=cache.at(1)-cache.at(0);
 
      if (diff1<=diff2)
          return 1;
@@ -194,9 +193,9 @@ std::tuple<bool, double> Strategy::calculate_signals(){
 }
 
 void Strategy::simulate(){
-     std::map<int, double> data_plot_short; // map (day --> momentum/ short_ema/ short_sma ) where day = 1 is yesterday, 
+     std::map<int, double> data_plot_short; // map (day --> momentum/ short_ema/ linear regression  ) where day = 1 is yesterday,
     // day = 2 is the day before, ...
-     std::map<int, double> data_plot_long; // map (day --> long_ema/ long_sma ) where day = 1 is yesterday, 
+     std::map<int, double> data_plot_long; // map (day --> long_ema) where day = 1 is yesterday,
     // day = 2 is the day before, ...
     
    
@@ -204,7 +203,14 @@ void Strategy::simulate(){
     
 
     if (this->get_name() == 'EMA'){ //exponential moving average
-        //
+        for (int k=0, k<nb_points, k++){
+        std::map<long, double> bars_11 = this->get_data(11);
+        std::map<long, double> bars_6 = this->get_data(6);
+        double ema_11 = this->calculate_ema(bars_11); // Longer Moving Average
+        double ema_06 = this->calculate_ema(bars_6);
+        data_plot_short.insert(pair<int, double>(k, ema_6));
+        data_plot_long.insert(pair<int, double>(k, ema_11));
+        }
     }
     
     
@@ -222,7 +228,18 @@ void Strategy::simulate(){
     
     
     if (this->get_name() == 'LR'){//linear regression
-        //
+        std::map<long, double> bars = this->get_data(20);
+        slope, yintercept = this->auxiliary_linear_regression(bars); // change this
+        for (int k=0, k<nb_points, k++){
+        data_plot_short.insert(pair<int, double>(-k, slope*(-k)+yintercept));
+
+
+
+        }
+
+
+
+
     } 
 }
 
