@@ -34,6 +34,9 @@ SOURCES += \
     gui/widgets/selectwatchlistwidget.cpp \
     main.cpp \
     gui/mainwindow.cpp \
+    components/portfolio/portfolio.cpp \
+    components/trading_order/trading_order.cpp \
+    recommendation/strategy.cpp \
     gui/neworder.cpp
 
 HEADERS += \
@@ -49,11 +52,13 @@ HEADERS += \
     gui/signup.h \
     components/portfolio/portfolio.h \
     components/trading_order/trading_order.h \
+    recommendation/strategy.h \
     helper/helper.h \
     gui/neworder.h \
     gui/mainwindow.h \
     gui/widgets/selectwatchlistwidget.h \
     helper/helper.h
+
     
 FORMS += \
     gui/chooseportfolio.ui \
